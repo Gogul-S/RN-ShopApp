@@ -1,0 +1,17 @@
+{
+  "name": "sandhai",
+  "displayName": "sandhai",
+  "expo": {
+    "name": "sandhai",
+    "slug": "sandhai",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
