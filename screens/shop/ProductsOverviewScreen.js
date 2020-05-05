@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, FlatList, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 
 import ProductOverviewItem from '../../components/Shop/ProductOverviewItem';
+import * as cartActions from './../../store/actions/cart';
 
 const ProductsOverviewScreen = (props) => {
     const products = useSelector(state => state.products.availableProducts)
+    const dispatch = useDispatch();
     return (
 
         <View style = {styles.productList}>
@@ -18,7 +20,7 @@ const ProductsOverviewScreen = (props) => {
                         image={itemData.item.imageUrl}
                         price={itemData.item.price}
                         viewDetailHandler={() => { props.navigation.navigate({ routeName: 'productDetails', params: {productId: itemData.item.id, productTitle: itemData.item.title} })}}
-                        addToCartHandler={() => { }}
+                        addToCartHandler={() => {dispatch(cartActions.addToCart(itemData.item)) }}
                     />
                 }
                 style = {{flex: 1}} />
