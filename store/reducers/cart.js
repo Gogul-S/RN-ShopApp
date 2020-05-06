@@ -1,5 +1,7 @@
-import { ADD_TO_CART } from "../actions/cart"
+import { ADD_TO_CART, REMOVE_FROM_CART } from "../actions/cart"
 import CartItem from '../../models/cart-item'
+import { act } from "react-test-renderer";
+import { ADD_ORDER } from "../actions/orders";
 
 const initialState = {
     items: {},
@@ -18,7 +20,7 @@ export default (state = initialState, action) => {
             if (state.items[incomingProduct.id]) {
                 productItem = new CartItem(
                     productTitle,
-                    state.items[incomingProduct.id] + productPrice,
+                    state.items[incomingProduct.id].productPrice + productPrice,
                     productPrice,
                     state.items[incomingProduct.id].quantity + 1
                 )
@@ -36,8 +38,29 @@ export default (state = initialState, action) => {
                 items: { ...state.items, [incomingProduct.id]: productItem },
                 totalPrice: state.totalPrice + productPrice
             }
-            break;
-            default:
-                return state;
+        case REMOVE_FROM_CART:
+
+            const product = state.items[action.productId];
+            let quantity = product.quantity;
+            let updatedCartItems = { ...state.items }
+            if (quantity > 1) {
+                const updatedCartItem = new CartItem(
+                    product.productTitle,
+                    product.sum - product.productPrice,
+                    product.productPrice,
+                    quantity - 1);
+                updatedCartItems = {...state.items,[action.productId]: updatedCartItem}
+                    
+            } else {
+                delete updatedCartItems[action.productId]
+            }
+            return {
+                items: updatedCartItems,
+                totalPrice: state.totalPrice - product.productPrice
+            }
+        case ADD_ORDER:
+            return initialState;
+        default:
+            return state;
     }
 }

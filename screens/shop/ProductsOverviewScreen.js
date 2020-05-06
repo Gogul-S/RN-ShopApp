@@ -38,7 +38,13 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
                 <Item title='Cart' iconName='md-cart' onPress={
                     () => { navData.navigation.navigate('cart') }
                 } />
-            </HeaderButtons >
+            </HeaderButtons >,
+        headerLeft: () =>
+                <HeaderButtons HeaderButtonComponent={ScorpionHeaderButton}>
+                    <Item title = "Menu" 
+                    iconName='md-menu'
+                    onPress = {() => {navData.navigation.toggleDrawer()}} />
+                </HeaderButtons>
     }
 }
 
