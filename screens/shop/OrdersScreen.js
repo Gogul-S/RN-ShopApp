@@ -1,9 +1,10 @@
 import React from 'react';
-import { FlatList, Text,StyleSheet } from 'react-native';
+import { FlatList, Text, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import ScorpionHeaderButton from '../../components/UI/HeaderButton';
+import OrderItem from './../../components/Shop/OrderItem'
 
 
 const OrdersScreen = (props) => {
@@ -12,7 +13,11 @@ const OrdersScreen = (props) => {
         <FlatList
             data={orders}
             renderItem={itemData =>
-                <Text>{itemData.item.totalAmount}</Text>
+                <OrderItem
+                    amount={itemData.item.totalAmount}
+                    orderDate={itemData.item.readableDate}
+                    items={itemData.item.items}
+                />
             }
         />
     )
@@ -26,7 +31,8 @@ OrdersScreen.navigationOptions = navData => {
                 <Item title="Menu"
                     iconName='md-menu'
                     onPress={() => { navData.navigation.toggleDrawer() }} />
-            </HeaderButtons>
+            </HeaderButtons>,
+        unmountOnBlur:true
     })
 }
 
