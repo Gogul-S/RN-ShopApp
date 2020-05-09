@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Button, Text } from 'react-native'
+import { View, StyleSheet, Button, Text,Alert } from 'react-native'
 
 import { useSelector, useDispatch } from 'react-redux'
 import ProductOverviewItem from './../../components/Shop/ProductOverviewItem'
@@ -33,7 +33,14 @@ const UserProductScreen = (props) => {
                         editClickHandler(itemData.item.id)
                     }} />
                     <Button color={Colors.primary} title="Delete" onPress={() => {
-                        dispatch(ProductActions.deleteProduct(itemData.item.id))
+                        Alert.alert(
+                            'Delete Item',
+                        'Do you want to delete this Item ?',
+                        [
+                            {text: 'No', style:'default'},
+                            {text: 'Yes', style:'destructive', onPress: () => { dispatch(ProductActions.deleteProduct(itemData.item.id)) } }
+                        ])
+                        
                     }} />
 
                 </ProductOverviewItem>
