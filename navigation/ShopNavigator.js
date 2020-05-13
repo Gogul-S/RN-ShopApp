@@ -1,84 +1,109 @@
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createDrawerNavigator } from 'react-navigation-drawer'
-import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
-import Colors from '../constants/Colors';
-import ProductDetailScreen from '../screens/shop/ProductDetailsScreen';
-import CartScreen from '../screens/shop/CartScreen';
-import OrdersScreen from '../screens/shop/OrdersScreen';
-import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import UserProductScreen from '../screens/user/UserProductsScreen';
-import EditProductScreen from '../screens/user/EditProductScreen';
-
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import { createDrawerNavigator } from "react-navigation-drawer";
+import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
+import Colors from "../constants/Colors";
+import ProductDetailScreen from "../screens/shop/ProductDetailsScreen";
+import CartScreen from "../screens/shop/CartScreen";
+import OrdersScreen from "../screens/shop/OrdersScreen";
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import UserProductScreen from "../screens/user/UserProductsScreen";
+import EditProductScreen from "../screens/user/EditProductScreen";
+import AuthScreen from "../screens/user/AuthScreen";
 
 const defaultNavigationOption = {
-    headerStyle: {
-        backgroundColor: Colors.primary
-    },
-    headerTitleStyle: {
-        fontFamily: 'open-sans-bold'
-    },
-    headerBackTitleStyle: {
-        fontFamily: 'open-sans'
-    },
-    headerTintColor: 'white'
-}
+  headerStyle: {
+    backgroundColor: Colors.primary,
+  },
+  headerTitleStyle: {
+    fontFamily: "open-sans-bold",
+  },
+  headerBackTitleStyle: {
+    fontFamily: "open-sans",
+  },
+  headerTintColor: "white",
+};
 
-const ProductsNavigator = createStackNavigator({
+const ProductsNavigator = createStackNavigator(
+  {
     productsOverview: {
-        screen: ProductsOverviewScreen,
-        navigationOptions: {
-            headerTitle: 'Products',
-        }
+      screen: ProductsOverviewScreen,
+      navigationOptions: {
+        headerTitle: "Products",
+      },
     },
     productDetails: {
-        screen: ProductDetailScreen
+      screen: ProductDetailScreen,
     },
     cart: {
-        screen: CartScreen
-    }
-}, {
-    navigationOptions: {
-        drawerIcon : drawerConfig => (
-            <Ionicons name = 'md-cart' size = {23} color = {drawerConfig.tintColor}/>
-        )
+      screen: CartScreen,
     },
-    defaultNavigationOptions: defaultNavigationOption
-});
-
-const OrdersNavigator = createStackNavigator({
-    orders: OrdersScreen
-}, {
+  },
+  {
     navigationOptions: {
-        drawerIcon : drawerConfig => (
-            <Ionicons name = 'md-list' size = {23} color = {drawerConfig.tintColor}/>
-        )
+      drawerIcon: (drawerConfig) => (
+        <Ionicons name="md-cart" size={23} color={drawerConfig.tintColor} />
+      ),
     },
-    defaultNavigationOptions: defaultNavigationOption
-});
+    defaultNavigationOptions: defaultNavigationOption,
+  }
+);
 
-const AdminNavigator = createStackNavigator({
+const OrdersNavigator = createStackNavigator(
+  {
+    orders: OrdersScreen,
+  },
+  {
+    navigationOptions: {
+      drawerIcon: (drawerConfig) => (
+        <Ionicons name="md-list" size={23} color={drawerConfig.tintColor} />
+      ),
+    },
+    defaultNavigationOptions: defaultNavigationOption,
+  }
+);
+
+const AdminNavigator = createStackNavigator(
+  {
     userProducts: UserProductScreen,
     EditProduct: EditProductScreen,
-}, {
+  },
+  {
     navigationOptions: {
-        drawerIcon : drawerConfig => (
-            <Ionicons name = 'md-create' size = {23} color = {drawerConfig.tintColor}/>
-        )
+      drawerIcon: (drawerConfig) => (
+        <Ionicons name="md-create" size={23} color={drawerConfig.tintColor} />
+      ),
     },
-    defaultNavigationOptions: defaultNavigationOption
-});
+    defaultNavigationOptions: defaultNavigationOption,
+  }
+);
 
-const appNavigator = createDrawerNavigator({
+const appNavigator = createDrawerNavigator(
+  {
     Products: ProductsNavigator,
     Orders: OrdersNavigator,
-    Admin: AdminNavigator
-},
-{
+    Admin: AdminNavigator,
+  },
+  {
     contentOptions: {
-        activeTintColor: Colors.primary
-    }
-})
+      activeTintColor: Colors.primary,
+    },
+  }
+);
 
-export default createAppContainer(appNavigator);
+const AuthNavigator = createStackNavigator(
+  {
+    authScreen: AuthScreen,
+  },
+  {
+    defaultNavigationOptions: defaultNavigationOption,
+  }
+);
+
+const MainNavigator = createSwitchNavigator({
+  Auth: AuthNavigator,
+  App: appNavigator,
+});
+
+export default createAppContainer(MainNavigator);

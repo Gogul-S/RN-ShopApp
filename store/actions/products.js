@@ -6,11 +6,11 @@ export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
 export const SET_PRODUCT = "SET_PRODUCT";
 
 export const fetchProducts = () => {
-  return async (dispatch) => {
-    //async Code here
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     try {
       const response = await fetch(
-        "https://rn-one.firebaseio.com/products.json"
+        `https://rn-one.firebaseio.com/products.json?auth=${token}`
       );
       if (!response.ok) {
         throw new Error("Something went wrong !");
@@ -41,9 +41,10 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = (id) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://rn-one.firebaseio.com/products/${id}.json`,
+      `https://rn-one.firebaseio.com/products/${id}.json?auth=${token}`,
       {
         method: "DELETE",
       }
@@ -61,9 +62,10 @@ export const deleteProduct = (id) => {
 };
 
 export const createProduct = (title, desc, price, imageUrl) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      "https://rn-one.firebaseio.com/products.json",
+      `https://rn-one.firebaseio.com/products.json?auth=${token}`,
       {
         method: "POST",
         headers: {
@@ -94,9 +96,10 @@ export const createProduct = (title, desc, price, imageUrl) => {
 };
 
 export const updateProduct = (id, title, desc, imageUrl) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const token = getState().auth.token;
     const response = await fetch(
-      `https://rn-one.firebaseio.com/products/${id}.json`,
+      `https://rn-one.firebaseio.com/products/${id}.json?auth=${token}`,
       {
         method: "PATCH",
         headers: {
