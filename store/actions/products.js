@@ -22,7 +22,7 @@ export const fetchProducts = () => {
         loadedProducts.push(
           new Product(
             key,
-            "u1",
+            curObj.ownerId,
             curObj.title,
             curObj.imageUrl,
             curObj.desc,
@@ -30,9 +30,13 @@ export const fetchProducts = () => {
           )
         );
       }
+      const ownerId = getState().auth.userId;
       dispatch({
         type: SET_PRODUCT,
         products: loadedProducts,
+        userProducts: loadedProducts.filter(
+          (product) => product.ownerId === ownerId
+        ),
       });
     } catch (error) {
       throw error;
@@ -64,6 +68,7 @@ export const deleteProduct = (id) => {
 export const createProduct = (title, desc, price, imageUrl) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
+    const ownerId = getState().auth.userId;
     const response = await fetch(
       `https://rn-one.firebaseio.com/products.json?auth=${token}`,
       {
@@ -76,6 +81,7 @@ export const createProduct = (title, desc, price, imageUrl) => {
           price,
           imageUrl,
           desc,
+          ownerId,
         }),
       }
     );
@@ -90,6 +96,7 @@ export const createProduct = (title, desc, price, imageUrl) => {
         desc: desc,
         price: price,
         imageUrl: imageUrl,
+        ownerId,
       },
     });
   };

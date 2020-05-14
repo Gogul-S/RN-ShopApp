@@ -4,10 +4,12 @@ export const ADD_ORDER = "ADD_ORDER";
 export const SET_ORDERS = "SET_ORDERS";
 
 export const addOrder = (cartItems, totalAmount) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     const date = new Date().toISOString();
+    const userId = getState().auth.userId;
+    const token = getState().auth.token;
     const response = await fetch(
-      "https://rn-one.firebaseio.com/orders/u1.json",
+      `https://rn-one.firebaseio.com/orders/${userId}.json?auth=${token}`,
       {
         method: "POST",
         headers: {
@@ -23,6 +25,10 @@ export const addOrder = (cartItems, totalAmount) => {
 
     const resData = await response.json();
 
+    if (!response.ok) {
+      console.log(resData);
+    }
+
     dispatch({
       type: ADD_ORDER,
       orderData: {
@@ -36,10 +42,12 @@ export const addOrder = (cartItems, totalAmount) => {
 };
 
 export const fetchOrders = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
+      const userId = getState().auth.userId;
+      const token = getState().auth.token;
       const response = await fetch(
-        "https://rn-one.firebaseio.com/orders/u1.json"
+        `https://rn-one.firebaseio.com/orders/${userId}.json?auth=${token}`
       );
       if (!response.ok) {
         throw new Error("Something went wrong !");
