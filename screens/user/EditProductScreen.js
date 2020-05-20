@@ -43,7 +43,8 @@ const formReducer = (state, action) => {
 };
 
 const EditProductScreen = (props) => {
-  const productId = props.navigation.getParam("productId");
+  const routeParams = props.route.params ? navData.route.params : {};
+  const productId = routeParams.productId;
   const selectedProduct = useSelector((state) =>
     state.products.userProducts.find((prod) => prod.id === productId)
   );
@@ -117,8 +118,12 @@ const EditProductScreen = (props) => {
   }, [dispatch, formState]);
 
   useEffect(() => {
-    props.navigation.setParams({
-      submit: submitHandler,
+    props.navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={ScorpionHeaderButton}>
+          <Item title="Menu" iconName="md-checkmark" onPress={submitHandler} />
+        </HeaderButtons>
+      ),
     });
   }, [submitHandler]);
 
@@ -189,17 +194,10 @@ const EditProductScreen = (props) => {
   );
 };
 
-EditProductScreen.navigationOptions = (navData) => {
-  const submitFunc = navData.navigation.getParam("submit");
+export const editProductScreenOptions = (navData) => {
+  const routeParams = navData.route.params ? navData.route.params : {};
   return {
-    headerTitle: navData.navigation.getParam("productId")
-      ? "Edit Product"
-      : "Add Product",
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={ScorpionHeaderButton}>
-        <Item title="Menu" iconName="md-checkmark" onPress={submitFunc} />
-      </HeaderButtons>
-    ),
+    headerTitle: routeParams.productId ? "Edit Product" : "Add Product",
   };
 };
 

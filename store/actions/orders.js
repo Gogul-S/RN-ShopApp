@@ -26,7 +26,6 @@ export const addOrder = (cartItems, totalAmount) => {
     const resData = await response.json();
 
     if (!response.ok) {
-      console.log(resData);
     }
 
     dispatch({

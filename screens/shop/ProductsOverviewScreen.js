@@ -24,9 +24,9 @@ const ProductsOverviewScreen = (props) => {
   const dispatch = useDispatch();
 
   const onProductClickHandler = (id, title) => {
-    props.navigation.navigate({
-      routeName: "productDetails",
-      params: { productId: id, productTitle: title },
+    props.navigation.navigate("productDetails", {
+      productId: id,
+      productTitle: title,
     });
   };
 
@@ -41,15 +41,12 @@ const ProductsOverviewScreen = (props) => {
     setRefreshing(false);
   }, [dispatch]);
 
-  useEffect(() => {
-    const fetchProducts = props.navigation.addListener(
-      "willFocus",
-      loadProducts
-    );
-    return () => {
-      fetchProducts.remove();
-    };
-  }, [loadProducts]);
+  // useEffect(() => {
+  //   const unsubscribe = props.navigation.addListener("focus", loadProducts);
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [loadProducts]);
 
   useEffect(() => {
     setLoading(true);
@@ -125,7 +122,7 @@ const ProductsOverviewScreen = (props) => {
   );
 };
 
-ProductsOverviewScreen.navigationOptions = (navData) => {
+export const productOverviewScreenOptions = (navData) => {
   return {
     headerTitle: "All Products",
     headerRight: () => (

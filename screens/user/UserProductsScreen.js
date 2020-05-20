@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, StyleSheet, Button,  Alert,ActivityIndicator } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Button,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
 import ProductOverviewItem from "./../../components/Shop/ProductOverviewItem";
@@ -19,16 +25,19 @@ const UserProductScreen = (props) => {
     props.navigation.navigate("EditProduct", { productId: id });
   };
 
-  const deleteHandler = useCallback(async (id) => {
-    setLoading(true);
-    setError(null);
-    try {
-      await dispatch(ProductActions.deleteProduct(id));
-    } catch (err) {
-      setError(err.message);
-    }
-    setLoading(false);
-  }, [dispatch]);
+  const deleteHandler = useCallback(
+    async (id) => {
+      setLoading(true);
+      setError(null);
+      try {
+        await dispatch(ProductActions.deleteProduct(id));
+      } catch (err) {
+        setError(err.message);
+      }
+      setLoading(false);
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     if (error) {
@@ -77,7 +86,7 @@ const UserProductScreen = (props) => {
                       text: "Yes",
                       style: "destructive",
                       onPress: () => {
-                        deleteHandler(itemData.item.id)
+                        deleteHandler(itemData.item.id);
                       },
                     },
                   ]
@@ -91,7 +100,7 @@ const UserProductScreen = (props) => {
   );
 };
 
-UserProductScreen.navigationOptions = (navData) => {
+export const userProductScreenOptions = (navData) => {
   return {
     headerTitle: "User Products",
     headerLeft: () => (

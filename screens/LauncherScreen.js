@@ -17,7 +17,8 @@ const LauncherScreen = (props) => {
     const checkUserLoggedIn = async () => {
       const userData = await AsyncStorage.getItem("userData");
       if (!userData) {
-        props.navigation.navigate("Auth");
+        // props.navigation.navigate("Auth");
+        dispatch(AuthActions.setLoginTried());
         return;
       }
 
@@ -26,15 +27,17 @@ const LauncherScreen = (props) => {
       const expiryDate = new Date(expirationDate);
 
       if (expiryDate <= new Date() || !token || !userId) {
-        props.navigation.navigate("Auth");
+        // props.navigation.navigate("Auth");
+        dispatch(AuthActions.setLoginTried());
         return;
       }
 
-      props.navigation.navigate("App");
+      // props.navigation.navigate("App");
 
-      const expirationTime = expiryDate.getTime() - new Date().getTime;
-
-      dispatch(AuthActions.authenticate(userId, token, expirationTime));
+      const oldTime = expiryDate.getTime();
+      const currentTime = new Date().getTime();
+      const remainingTime = oldTime - currentTime;
+      dispatch(AuthActions.authenticate(userId, token, remainingTime));
     };
     checkUserLoggedIn();
   }, [dispatch]);
